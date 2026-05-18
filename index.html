@@ -1203,7 +1203,7 @@ async function processSpec(file) {
   reader.onload = async e => {
     const b64 = e.target.result.split(',')[1];
     try {
-      const res = await fetch('https://api.anthropic.com/v1/messages', {
+      const res = await fetch('https://gaw-compliance-proxy.vercel.app/api/claude', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -1468,7 +1468,7 @@ Return ONLY pure JSON (no markdown):
     });
     const content = [...imgContent, { type: 'text', text: prompt }];
     setProg('as-1', 'done'); setProg('as-2', 'running'); await sleep(150);
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const res = await fetch('https://gaw-compliance-proxy.vercel.app/api/claude', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 4000, messages: [{ role: 'user', content }] })
     });
@@ -1511,7 +1511,7 @@ Do NOT perform a compliance check — only compare the two artworks.
 Return ONLY pure JSON:
 {"matchVerdict":"MATCH","summary":"","differences":[{"element":"","proofValue":"","approvedValue":"","severity":"critical"}],"matchedElements":[]}` }];
     setProg('as-1', 'done'); setProg('as-8', 'running'); await sleep(200);
-    const res = await fetch('https://api.anthropic.com/v1/messages', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 2000, messages: [{ role: 'user', content }] }) });
+    const res = await fetch('https://gaw-compliance-proxy.vercel.app/api/claude', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 2000, messages: [{ role: 'user', content }] }) });
     if (!res.ok) { const e = await res.json(); throw new Error(e.error?.message || 'API error'); }
     const data = await res.json();
     const txt = (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('');
